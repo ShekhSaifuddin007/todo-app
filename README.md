@@ -1,4 +1,4 @@
-# todo-app
+# TodoApp with view
 
 > A Vue.js project
 
@@ -17,5 +17,11 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+## Inspired from
+  [Andre Madarang](https://www.youtube.com/playlist?list=PLEhEHUEU3x5q-xB1On4CsLPts0-rZ9oos) he is a nice guy creating awesome content on his channel.
+
+
+## Laravel Api
+  coming soon....
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
