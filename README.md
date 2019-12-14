@@ -22,6 +22,6 @@ npm run build --report
 
 
 ## Laravel Api
-  coming soon....
+  Laravel Api is [here](https://github.com/ShekhSaifuddin007/todo-laravel). enjoy
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
