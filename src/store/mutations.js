@@ -1,4 +1,7 @@
 export default {
+  retrieveTodos(state, todos) {
+    state.todos = todos;
+  },
   addTodo(state, todo) {
     state.todos.push({
       id : todo.id,
@@ -17,7 +20,7 @@ export default {
   },
 
   updateTodo(state, todo) {
-    const index = state.todos.findIndex((item) => item.id == todo.id)
+    const index = state.todos.findIndex((item) => item.id === todo.id)
     state.todos.splice(index, 1, {
       id : todo.id,
       title : todo.title,
@@ -28,7 +31,7 @@ export default {
   },
 
   deleteTodo(state, id) {
-    const index = state.todos.findIndex((item) => item.id == id)
+    const index = state.todos.findIndex((item) => item.id === id)
     state.todos.splice(index, 1);
   },
 
