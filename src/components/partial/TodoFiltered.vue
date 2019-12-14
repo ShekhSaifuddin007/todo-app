@@ -7,21 +7,20 @@
 </template>
 
 <script>
-    export default {
-        name: "TodoFiltered",
-      data() {
-          return {
-            filter : 'all'
-          }
-      },
+  export default {
+    name: "TodoFiltered",
+    computed : {
+      filter() {
+        return this.$store.state.filter;
+      }
+    },
 
-      methods : {
-        changeFilter(filter) {
-          this.filter = filter;
-          Bus.$emit('filterChanged', this.filter)
-        }
+    methods : {
+      changeFilter(filter) {
+        this.$store.dispatch('updateFilter', filter);
       }
     }
+  }
 </script>
 
 <style scoped>

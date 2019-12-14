@@ -10,7 +10,7 @@
     </div>
     <div>
       <button @click="pluralize">Plural</button>
-      <span class="remove-item" @click="remove(index)">&times</span>
+      <span class="remove-item" @click="remove(todo.id)">&times</span>
     </div>
 
   </div>
@@ -23,10 +23,6 @@
       todo : {
         type : Object,
         required : true
-      },
-      index : {
-        type: Number,
-        required: true
       },
       checkAll : {
         type: Boolean,
@@ -62,18 +58,13 @@
 
     watch : {
       checkAll() {
-        // if (this.checkAll) {
-        //   this.completed = true
-        // } else {
-        //   this.completed = this.todo.completed
-        // }
         this.completed = this.checkAll ? true : this.todo.completed;
       },
     },
 
     methods : {
-      remove(index) {
-        Bus.$emit('removedTodo', index);
+      remove(id) {
+        this.$store.dispatch('deleteTodo', id);
       },
       editTodo() {
         this.cacheTitle = this.title;
@@ -84,30 +75,31 @@
           this.title = this.cacheTitle
         }
         this.editing = false;
-        this.finishEdit();
+
+        this.$store.dispatch('updateTodo', {
+          id : this.id,
+          title : this.title,
+          completed : this.completed,
+          editing : this.editing,
+          cacheTitle : '',
+        });
       },
       cancelEdit() {
         this.title = this.cacheTitle;
         this.editing = false;
-      },
-      finishEdit() {
-        Bus.$emit('finishedEdit', {
-          index : this.index,
-          todo : {
-            id : this.id,
-            title : this.title,
-            completed : this.completed,
-            editing : this.editing,
-            cacheTitle : '',
-          }
-        });
       },
       pluralize() {
         Bus.$emit('pluralize')
       },
       handlePluralize () {
         this.title = this.title + 's';
-        this.finishEdit()
+        this.$store.dispatch('updateTodo', {
+          id : this.id,
+          title : this.title,
+          completed : this.completed,
+          editing : this.editing,
+          cacheTitle : '',
+        });
       }
     }
   }

@@ -10,16 +10,15 @@
 <script>
   export default {
     name: "TodoCheckAll",
-    props : {
-      anyRemaining : {
-        type : Boolean,
-        required : true
+    computed : {
+      anyRemaining() {
+        return this.$store.getters.anyRemaining
       }
     },
 
     methods : {
       checkedAll() {
-        Bus.$emit('allChecked', this.anyRemaining)
+        this.$store.dispatch('checkAll', event.target.checked);
       }
     }
   }

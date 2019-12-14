@@ -3,18 +3,17 @@
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
 
-      <todo-item v-for="(todo, index) in todosFiltered"
+      <todo-item v-for="todo in todosFiltered"
                  :key="todo.id"
                  :todo="todo"
-                 :index="index"
                  :checkAll="! anyRemaining"
       />
 
     </transition-group>
 
     <div class="extra-container" v-if="todosFiltered.length">
-      <todo-check-all :anyRemaining="anyRemaining"/>
-      <todo-item-remaining :remaining="remaining"/>
+      <todo-check-all/>
+      <todo-item-remaining/>
     </div>
 
     <div class="extra-container">
@@ -22,7 +21,7 @@
 
       <div>
         <transition name="fade">
-          <todo-clear-button :showClearCompleted="showClearCompleted"/>
+          <todo-clear-button/>
         </transition>
       </div>
 
@@ -44,62 +43,17 @@
     },
     data () {
       return {
-        filter : 'all',
         newTodo : '',
         todoId : 3,
-        cacheTitle : '',
-        todos : [
-          {
-            id: 1,
-            title: 'Finish Vue Screencast',
-            completed: false,
-            editing: false,
-          },
-          {
-            id: 2,
-            title: 'Take over world',
-            completed: false,
-            editing: false,
-          },
-        ]
       }
     },
 
-    created() {
-      Bus.$on('removedTodo', (index) => this.remove(index));
-      Bus.$on('finishedEdit', (data) => this.finishedEdit(data));
-      Bus.$on('allChecked', (check) => this.checkAllTodos(check));
-      Bus.$on('filterChanged', (filter) => this.filter = filter);
-      Bus.$on('clearCompletedTodos', () => this.clearCompleted());
-    },
-
-    beforeDestroy() {
-      Bus.$off('removedTodo', (index) => this.remove(index));
-      Bus.$off('finishedEdit', (data) => this.finishedEdit(data));
-      Bus.$off('allChecked', (check) => this.checkAllTodos(check));
-      Bus.$off('filterChanged', (filter) => this.filter = filter);
-      Bus.$off('clearCompletedTodos', () => this.clearCompleted());
-    },
-
     computed : {
-      remaining() {
-        return this.todos.filter(todo => ! todo.completed).length
-      },
       anyRemaining() {
-        return this.remaining !== 0;
+        return this.$store.getters.anyRemaining
       },
       todosFiltered() {
-        if (this.filter === 'all') {
-          return this.todos
-        } else if (this.filter === 'active') {
-          return this.todos.filter(todo => !todo.completed)
-        } else if (this.filter === 'completed') {
-          return this.todos.filter(todo => todo.completed)
-        }
-        return this.todos
-      },
-      showClearCompleted() {
-        return this.todos.filter(todo => todo.completed).length > 0;
+        return this.$store.getters.todosFiltered
       }
     },
 
@@ -109,41 +63,13 @@
           return;
         }
 
-        this.todos.push({
+        this.$store.dispatch('addTodo', {
           id : this.todoId,
           title : this.newTodo,
-          completed : false,
-          editing : false
         });
         this.newTodo = '';
         this.todoId++;
       },
-      remove(index) {
-        this.todos.splice(index, 1);
-      },
-      // editTodo(todo) {
-      //   this.cacheTitle = todo.title;
-      //   todo.editing = true;
-      // },
-      // doneEdit(todo) {
-      //   if (todo.title.trim() === '') {
-      //     todo.title = this.cacheTitle
-      //   }
-      //   todo.editing = false;
-      // },
-      // cancelEdit(todo) {
-      //   todo.title = this.cacheTitle;
-      //   todo.editing = false;
-      // },
-      checkAllTodos() {
-        this.todos.forEach((todo) => todo.completed = event.target.checked);
-      },
-      clearCompleted() {
-        this.todos = this.todos.filter(todo => ! todo.completed);
-      },
-      finishedEdit(data) {
-        this.todos.splice(data.index, 1, data.todo);
-      }
     }
   }
 </script>

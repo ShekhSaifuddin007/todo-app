@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router/routes';
+import {store} from "./store/store";
 
 window.Bus = new Vue();
 
@@ -12,6 +13,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
-})
+});
